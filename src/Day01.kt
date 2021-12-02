@@ -1,5 +1,5 @@
 fun main() {
-    fun part1(input: List<String>): Int {
+    fun part1(input: List<Int>): Int {
         var res = 0
         for (i in 1 until input.size) {
             if (input[i] > input[i-1]) res++
@@ -7,7 +7,7 @@ fun main() {
         return res
     }
 
-    fun part2(input: List<String>): Int {
+    fun part2(input: List<Int>): Int {
         var res = 0
         for (i in 3 until input.size) {
             val firstThree = input[i-3] + input[i-2] + input[i-1]
@@ -19,7 +19,7 @@ fun main() {
 
 
     val input = readInput("day1")
-    input.map { it.toInt() }
-    println(part1(input))
-    println(part2(input))
+    val inputInt = input.map { it.toInt() }
+    println(part1(inputInt))
+    println(part2(inputInt))
 }
