@@ -5,9 +5,9 @@ import java.security.MessageDigest
 /**
  * Reads lines from the given input txt file.
  */
-fun readInput(name: String) = File("src/input/", "$name").readLines()
+fun readInput(name: String) = File("src/input/", name).readLines()
 
-fun readInputTest(name: String) = File("src/inputTest/", "$name").readLines()
+fun readInputTest(name: String) = File("src/inputTest/", name).readLines()
 
 
 /**
