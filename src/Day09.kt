@@ -1,13 +1,13 @@
 fun main() {
     var inputCopy = mutableListOf<MutableList<Int>>()
-    fun findBasin(i: Int, j: Int, case: String = "", visited: Boolean) {
-
-
-        if (case != "down" && i > 0 && inputCopy[i - 1][j] != 9) findBasin(i - 1, j, "left", true)
-        else if (case != "right" && j > 0 && inputCopy[i][j - 1] != 9) findBasin(i, j - 1,"up", true)
-        else if (case != "up" && i < inputCopy.size - 1 && inputCopy[i + 1][j] != 9) findBasin(i + 1, j, "down", true)
-        else if (case != "left" && j < inputCopy[0].size - 1 && inputCopy[i][j + 1] != 9) findBasin(i, j + 1, "right", true)
+    fun findBasin(i: Int, j: Int) {
         inputCopy[i][j] = -1
+
+        if (i > 0 && inputCopy[i - 1][j] != 9 && inputCopy[i - 1][j] != -1) findBasin(i - 1, j)
+        if (j > 0 && inputCopy[i][j - 1] != 9 && inputCopy[i][j-1] != -1) findBasin(i, j - 1)
+        if (i < inputCopy.size - 1 && inputCopy[i + 1][j] != 9 && inputCopy[i + 1][j] != -1) findBasin(i + 1, j)
+        if (j < inputCopy[0].size - 1 && inputCopy[i][j + 1] != 9 && inputCopy[i][j+1] != -1) findBasin(i, j + 1)
+
 
     }
 
@@ -37,7 +37,7 @@ fun main() {
                 val right = if (j < input[0].size - 1) input[i][j + 1] else 10
                 if (input[i][j] < left && input[i][j] < right && input[i][j] < up && input[i][j] < down) {
                     inputCopy = input.map { it.toMutableList() } as MutableList<MutableList<Int>>
-                    findBasin(i, j, "",true)
+                    findBasin(i, j)
                     inputCopy.forEach { res += it.count { num -> num == -1 } }
                     if (results[2] < res) {
                         results[2] = res
@@ -49,13 +49,13 @@ fun main() {
         }
 
         res = 1
-        results.forEach { res * it }
+        for (number in results) res *= number
 
         return res
     }
 
 
-    val input = readInputTest("day9")
+    val input = readInput("day9")
     println(part1(input.map { line ->
         line.split("").filter { it.isNotEmpty() }.map { number -> number.toInt() }
     } as MutableList<MutableList<Int>>))
