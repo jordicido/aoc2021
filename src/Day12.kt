@@ -1,26 +1,28 @@
 fun main() {
     var waysOfStart: MutableList<String> = mutableListOf()
-    var stackToVisit: MutableList<String> = mutableListOf()
     var input: List<List<String>> = mutableListOf()
+    var res = 0
 
-    fun lookForPath(way: String, visited: MutableList<String>): Int {
-        return if (way == "end") 1
+    fun lookForPath(way: String, stackVisited: Array<String>) {
+        var adjacentNodes = mutableListOf<String>()
+        if (way == "end") res += 1
         else {
-            if (way[0].isLowerCase()) visited.add(way)
-            input.filter { it[0] == way }.forEach { dest -> if (!visited.contains(dest[1])) stackToVisit.add(dest[1]) }
-            if (stackToVisit.isNotEmpty()) lookForPath(stackToVisit.removeAt(0), visited)
-            else 0
+            var visited: Array<String> = stackVisited
+            if (way[0].isLowerCase()) visited = stackVisited.plus(way)
+            input.filter { it[0] == way }.forEach { dest -> adjacentNodes.add(dest[1]) }
+            input.filter { it[1] == way }.forEach { dest -> adjacentNodes.add(dest[0]) }
+            while (adjacentNodes.isNotEmpty()) if (!stackVisited.contains(adjacentNodes[0]))lookForPath(adjacentNodes.removeAt(0), visited) else adjacentNodes.removeAt(0)
         }
     }
 
     fun part1(): Int {
-        var res = 0
 
         input.filter { it[0] == "start" }.forEach { dest -> waysOfStart.add(dest[1]) }
+        input.filter { it[1] == "start" }.forEach { dest -> waysOfStart.add(dest[0]) }
+        input = input.filter { it[0] != "start" && it[1] != "start" }
 
         while (waysOfStart.isNotEmpty()) {
-            res += lookForPath(waysOfStart.removeAt(0), mutableListOf())
-            stackToVisit = mutableListOf()
+            lookForPath(waysOfStart.removeAt(0), arrayOf())
         }
 
         return res
@@ -35,7 +37,7 @@ fun main() {
     }
 
 
-    input = readInputTest("day12").map { it.split("-") }
+    input = readInput("day12").map { it.split("-") }
     println(part1())
     println(part2())
 }
